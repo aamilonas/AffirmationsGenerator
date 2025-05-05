@@ -11,7 +11,7 @@ import SwiftUI
 struct AffirmationsGeneratorApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentInputView()
         }
     }
 }

@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4EBAABCD2DC934DA00ADCA0F /* OpenAIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4EBAABCC2DC934DA00ADCA0F /* OpenAIKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		4EBAABA22DC92CA400ADCA0F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4EBAABCD2DC934DA00ADCA0F /* OpenAIKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 				4EBAAB962DC92CA200ADCA0F /* AffirmationsGenerator */,
 				4EBAABA42DC92CA400ADCA0F /* AffirmationsGeneratorTests */,
 				4EBAABAE2DC92CA400ADCA0F /* AffirmationsGeneratorUITests */,
+				4EBAABCB2DC934DA00ADCA0F /* Frameworks */,
 				4EBAAB952DC92CA200ADCA0F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +96,13 @@
 				4EBAABAB2DC92CA400ADCA0F /* AffirmationsGeneratorUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		4EBAABCB2DC934DA00ADCA0F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -112,6 +125,7 @@
 			);
 			name = AffirmationsGenerator;
 			packageProductDependencies = (
+				4EBAABCC2DC934DA00ADCA0F /* OpenAIKit */,
 			);
 			productName = AffirmationsGenerator;
 			productReference = 4EBAAB942DC92CA200ADCA0F /* AffirmationsGenerator.app */;
@@ -195,6 +209,9 @@
 			);
 			mainGroup = 4EBAAB8B2DC92CA200ADCA0F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				4EBAABCA2DC9341E00ADCA0F /* XCRemoteSwiftPackageReference "OpenAIKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4EBAAB952DC92CA200ADCA0F /* Products */;
 			projectDirPath = "";
@@ -558,6 +575,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4EBAABCA2DC9341E00ADCA0F /* XCRemoteSwiftPackageReference "OpenAIKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/OpenDive/OpenAIKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4EBAABCC2DC934DA00ADCA0F /* OpenAIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4EBAABCA2DC9341E00ADCA0F /* XCRemoteSwiftPackageReference "OpenAIKit" */;
+			productName = OpenAIKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4EBAAB8C2DC92CA200ADCA0F /* Project object */;
 }

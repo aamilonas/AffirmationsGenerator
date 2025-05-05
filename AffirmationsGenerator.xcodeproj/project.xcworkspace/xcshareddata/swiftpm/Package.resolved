@@ -1,0 +1,15 @@
+{
+  "originHash" : "87e3572402342ff9224e4681f0d8bb185d13960fa8d2954e9e3d530cdf19aba7",
+  "pins" : [
+    {
+      "identity" : "openaikit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/OpenDive/OpenAIKit.git",
+      "state" : {
+        "revision" : "1ae438e665433273474d330a74241a1c55742a79",
+        "version" : "2.0.1"
+      }
+    }
+  ],
+  "version" : 3
+}
