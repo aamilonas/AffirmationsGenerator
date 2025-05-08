@@ -9,6 +9,10 @@ import SwiftUI
 
 @main
 struct AffirmationsGeneratorApp: App {
+    init() {
+            UIView.appearance().overrideUserInterfaceStyle = .dark
+        }
+    
     var body: some Scene {
         WindowGroup {
             ContentInputView()

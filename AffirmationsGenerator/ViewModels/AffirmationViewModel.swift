@@ -49,7 +49,7 @@ class AffirmationViewModel: ObservableObject {
 
         do {
             let chatParameters = ChatParameters(
-                model: "gpt-4o",
+                model: .gpt4,
                 messages: [
                     ChatMessage(role: .system, content: "You are a helpful assistant."),
                     ChatMessage(role: .user, content: prompt)
