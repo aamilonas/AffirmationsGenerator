@@ -1,48 +1,106 @@
 import SwiftUI
 
 struct ContentInputView: View {
+    @State private var appearDelayPassed = false
     @StateObject private var viewModel = AffirmationViewModel()
     @State private var currentText = ""
-    
+    @State private var isAnyInputFocused: Bool = false
+
     var body: some View {
         NavigationView {
             VStack {
                 TabView(selection: $viewModel.currentPage) {
+                    // Transition Before Identity Modeling
+                    TransitionPage(text: """
+                    If nothing was off-limits, what do I truly want my life to look and feel like?
+                    (Clarity on desire)
+                    """)
+                    .multilineTextAlignment(.center)
+
                     InputPage(
-                        title: "List some of the characteristics of your IDEAL self.",
-                        items: $viewModel.userInputs.idealSelfCharacteristics
-                    )
-                    .tag(0)
-                    
-                    InputPage(
-                        title: "What are your goals for the following 3 months?",
-                        items: $viewModel.userInputs.threeMonthGoals
+                        title: "If nothing was off-limits, what do I truly want my life to look and feel like? (Clarity on desire)",
+                        items: $viewModel.userInputs.idealSelfCharacteristics,
+                        isAnyInputFocused: $isAnyInputFocused
                     )
                     .tag(1)
-                    
+
+                    // Transition Before Assumptions
+                    TransitionPage(text: "Your beliefs shape your behavior. Identify the assumptions you'd hold if your success was guaranteed.")
+                        .tag(2)
+
                     InputPage(
-                        title: "What are some goals you'd like to accomplish this upcoming year?",
-                        items: $viewModel.userInputs.yearlyGoals
-                    )
-                    .tag(2)
-                    
-                    InputPage(
-                        title: "What does your ideal life look like in 5 years?",
-                        items: $viewModel.userInputs.fiveYearVision
+                        title: "What am I craving emotionally beneath the surface of my goals? (Freedom? Love? Recognition? Peace?)",
+                        items: $viewModel.userInputs.threeMonthGoals,
+                        isAnyInputFocused: $isAnyInputFocused
                     )
                     .tag(3)
+
+                    // Transition Before Subconscious Reprogramming
+                    TransitionPage(text: "Growth also means shedding what's outdated. Let's define what needs to be left behind.")
+                        .tag(4)
+
+                    InputPage(
+                        title: "What’s secretly holding me back from believing I can have it? (Limiting beliefs, self-worth issues, fear of change?)",
+                        items: $viewModel.userInputs.yearlyGoals,
+                        isAnyInputFocused: $isAnyInputFocused
+                    )
+                    .tag(5)
+
+                    // Transition Before Assumed Action
+                    TransitionPage(text: "Step into the identity now. If your vision was real today, how would you behave?")
+                        .tag(6)
+
+                    InputPage(
+                        title: "What part of me benefits from staying the same, even if I say I want change? (Uncovering resistance or subconscious comfort zones)",
+                        items: $viewModel.userInputs.fiveYearVision,
+                        isAnyInputFocused: $isAnyInputFocused
+                    )
+                    .tag(7)
+
+                    // Transition Before 5-Year Vision
+                    TransitionPage(text: "Zoom out. Consider what a fully aligned, meaningful life looks like in five years — day-to-day, emotionally, and mentally.")
+                        .tag(8)
+
+                    InputPage(
+                        title: "What version of me already has this life — and how do they think, feel, act? (Identity shift and embodiment)",
+                        items: $viewModel.userInputs.fiveYearVision,
+                        isAnyInputFocused: $isAnyInputFocused
+                    )
+                    .tag(9)
+                    
+                    TransitionPage(text: "Zoom out. Consider what a fully aligned, meaningful life looks like in five years — day-to-day, emotionally, and mentally.")
+                        .tag(10)
+
+                    InputPage(
+                        title: "What would I believe about myself if I were already living this life? (Your affirmation blueprint)",
+                        items: $viewModel.userInputs.fiveYearVision,
+                        isAnyInputFocused: $isAnyInputFocused
+                    )
+                    .tag(11)
                 }
-                .tabViewStyle(.page)
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
-                
-                if viewModel.currentPage < 3 {
-                    Button("Continue") {
-                        withAnimation {
-                            viewModel.currentPage += 1
-                        }
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .padding()
+                .onChange(of: viewModel.currentPage) { _ in
+                    isAnyInputFocused = false
+                }
+
+                if viewModel.currentPage < 9 {
+    if appearDelayPassed {
+        Button("Continue") {
+            Task {
+                withAnimation(.easeInOut(duration: 0.6)) {
+                    viewModel.currentPage += 1
+                }
+                try? await Task.sleep(nanoseconds: 300_000_000) // 0.3s pause
+            }
+        }
+        .buttonStyle(.borderedProminent)
+        .scaleEffect(appearDelayPassed ? 1.05 : 1.0)
+        .animation(appearDelayPassed ? .easeInOut(duration: 0.8).repeatForever(autoreverses: true) : .default, value: appearDelayPassed)
+        .padding()
+    }
+
+        
                 } else {
                     Button("Generate Affirmations") {
                         Task {
@@ -52,8 +110,8 @@ struct ContentInputView: View {
                     .buttonStyle(.borderedProminent)
                     .padding()
                 }
+            
             }
-            .navigationTitle("Personal Affirmations")
         }
         .sheet(isPresented: .constant(!viewModel.affirmations.isEmpty)) {
             AffirmationsView(affirmations: viewModel.affirmations)
@@ -61,9 +119,33 @@ struct ContentInputView: View {
     }
 }
 
+struct TransitionPage: View {
+    let text: String
+    @State private var appear = false
+
+    var body: some View {
+        VStack {
+            Spacer()
+            Text(text)
+                .multilineTextAlignment(.center)
+                .font(.title3)
+                .opacity(appear ? 1 : 0)
+                .scaleEffect(appear ? 1 : 0.95)
+                .animation(.easeOut(duration: 0.6), value: appear)
+                .padding()
+            Spacer()
+        }
+        .padding()
+        .onAppear {
+            appear = true
+        }
+    }
+}
+
 struct InputPage: View {
     let title: String
     @Binding var items: [String]
+    @Binding var isAnyInputFocused: Bool
     @State private var currentText = ""
     @FocusState private var isInputFocused: Bool
 
@@ -103,6 +185,9 @@ struct InputPage: View {
                 self.isInputFocused = true
             }
         }
+        .onChange(of: isInputFocused) { newValue in
+            isAnyInputFocused = newValue
+        }
     }
 
     private func addItem() {
@@ -113,10 +198,9 @@ struct InputPage: View {
     }
 }
 
-
 struct AffirmationsView: View {
     let affirmations: [String]
-    
+
     var body: some View {
         NavigationView {
             List(affirmations, id: \.self) { affirmation in
@@ -126,4 +210,4 @@ struct AffirmationsView: View {
             .navigationTitle("Your Affirmations")
         }
     }
-} 
+}
