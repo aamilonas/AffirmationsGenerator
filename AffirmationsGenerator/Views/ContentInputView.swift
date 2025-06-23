@@ -11,76 +11,93 @@ struct ContentInputView: View {
             VStack {
                 TabView(selection: $viewModel.currentPage) {
                     // Transition Before Identity Modeling
+                    
+                    TransitionPage(text: """
+                    🌱 Ready to get real with yourself?
+
+                    This isn’t about fixing anything — it’s about tuning in. What do you really want? What’s been holding you back? And who are you becoming?
+
+                    These questions are here to help you peel back the noise and connect with what actually matters to you.
+
+                    No pressure. No judgment. Just honesty and curiosity.
+
+                    Take a breath — and let’s dive in.
+                    """)
+                    .multilineTextAlignment(.center)
+                    .tag(0)
+                    
                     TransitionPage(text: """
                     If nothing was off-limits, what do I truly want my life to look and feel like?
+                    
                     (Clarity on desire)
                     """)
                     .multilineTextAlignment(.center)
+                    .tag(1)
 
                     InputPage(
                         title: "If nothing was off-limits, what do I truly want my life to look and feel like? (Clarity on desire)",
                         items: $viewModel.userInputs.idealSelfCharacteristics,
                         isAnyInputFocused: $isAnyInputFocused
                     )
-                    .tag(1)
+                    .tag(2)
 
                     // Transition Before Assumptions
                     TransitionPage(text: "Your beliefs shape your behavior. Identify the assumptions you'd hold if your success was guaranteed.")
-                        .tag(2)
+                        .tag(3)
 
                     InputPage(
                         title: "What am I craving emotionally beneath the surface of my goals? (Freedom? Love? Recognition? Peace?)",
                         items: $viewModel.userInputs.threeMonthGoals,
                         isAnyInputFocused: $isAnyInputFocused
                     )
-                    .tag(3)
+                    .tag(4)
 
                     // Transition Before Subconscious Reprogramming
                     TransitionPage(text: "Growth also means shedding what's outdated. Let's define what needs to be left behind.")
-                        .tag(4)
+                        .tag(5)
 
                     InputPage(
                         title: "What’s secretly holding me back from believing I can have it? (Limiting beliefs, self-worth issues, fear of change?)",
                         items: $viewModel.userInputs.yearlyGoals,
                         isAnyInputFocused: $isAnyInputFocused
                     )
-                    .tag(5)
+                    .tag(6)
 
                     // Transition Before Assumed Action
                     TransitionPage(text: "Step into the identity now. If your vision was real today, how would you behave?")
-                        .tag(6)
+                        .tag(7)
 
                     InputPage(
                         title: "What part of me benefits from staying the same, even if I say I want change? (Uncovering resistance or subconscious comfort zones)",
                         items: $viewModel.userInputs.fiveYearVision,
                         isAnyInputFocused: $isAnyInputFocused
                     )
-                    .tag(7)
+                    .tag(8)
 
                     // Transition Before 5-Year Vision
                     TransitionPage(text: "Zoom out. Consider what a fully aligned, meaningful life looks like in five years — day-to-day, emotionally, and mentally.")
-                        .tag(8)
+                        .tag(9)
 
                     InputPage(
                         title: "What version of me already has this life — and how do they think, feel, act? (Identity shift and embodiment)",
                         items: $viewModel.userInputs.fiveYearVision,
                         isAnyInputFocused: $isAnyInputFocused
                     )
-                    .tag(9)
+                    .tag(10)
                     
                     TransitionPage(text: "Zoom out. Consider what a fully aligned, meaningful life looks like in five years — day-to-day, emotionally, and mentally.")
-                        .tag(10)
+                        .tag(11)
 
                     InputPage(
                         title: "What would I believe about myself if I were already living this life? (Your affirmation blueprint)",
                         items: $viewModel.userInputs.fiveYearVision,
                         isAnyInputFocused: $isAnyInputFocused
                     )
-                    .tag(11)
+                    .tag(12)
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
-                .onChange(of: viewModel.currentPage) { _ in
+                .onChange(of: viewModel.currentPage) { oldValue, newValue in
                     isAnyInputFocused = false
                 }
 
@@ -110,7 +127,12 @@ struct ContentInputView: View {
                     .buttonStyle(.borderedProminent)
                     .padding()
                 }
-            
+            }
+            .onAppear {
+                appearDelayPassed = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                    appearDelayPassed = true
+                }
             }
         }
         .sheet(isPresented: .constant(!viewModel.affirmations.isEmpty)) {
@@ -185,7 +207,7 @@ struct InputPage: View {
                 self.isInputFocused = true
             }
         }
-        .onChange(of: isInputFocused) { newValue in
+        .onChange(of: isInputFocused) { oldValue, newValue in
             isAnyInputFocused = newValue
         }
     }
